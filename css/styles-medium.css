@@ -3,5 +3,11 @@
         grid-template-columns: repeat(2, 1fr);        
         grid-column-gap: 1em;        
         grid-row-gap: 1em;
-      }      
+    }   
+    #ham_icon {
+        display:none!important;
+    }    
+    #map-container {
+        display:block;
+    }   
 }

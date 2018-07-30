@@ -18,6 +18,7 @@
   "homepage": "https://github.com/jarcik/mws-restaurant-stage2#readme",
   "dependencies": {
     "gulp-images-resizer": "0.0.5",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify-es": "^1.0.4",
     "idb": "^2.1.3"
   },

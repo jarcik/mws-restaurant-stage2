@@ -1,7 +1,7 @@
 //start of the cache name (used even in comparing in deleting cache)
 const cacheNameStartWith = 'restaurant-reviews-cache-';
 //name of a cache - as a constant
-const cacheNameFullStatic = cacheNameStartWith+'v2';
+const cacheNameFullStatic = cacheNameStartWith+'v5';
 
 //install sw
 self.addEventListener('install', event => {
@@ -13,6 +13,7 @@ self.addEventListener('install', event => {
         './dist/styles-extra-large.css',
         './dist/styles-large.css',
         './dist/styles-medium.css',
+        './dist/styles-small.css',
         './dist/styles.css',
         './dist/styles-detail.css',
         './dist/styles-extra-large-detail.css',
@@ -57,7 +58,7 @@ self.addEventListener('activate',  event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.open(cacheNameFullStatic).then(cache => {
-      return cache.match(event.request).then(response => {
+      return cache.match(event.request, {ignoreSearch:true}).then(response => {
         if(response) {
           return response;
         } else {

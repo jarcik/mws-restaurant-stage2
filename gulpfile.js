@@ -4,6 +4,7 @@ let concat = require('gulp-concat');
 let rename = require('gulp-rename');
 let uglify = require('gulp-uglify-es').default;
 let resizer = require('gulp-images-resizer');
+var sourcemaps = require('gulp-sourcemaps');
 
 let distFolder = 'dist';
 
@@ -17,7 +18,9 @@ gulp.task('css', () => {
   });
 
 
-let vendorsFiles = 'node_modules/idb/lib/idb.js';
+let vendorsFiles = [
+    'node_modules/idb/lib/idb.js'
+];
 let jsFiles = [
     './js/main.js',
     './js/dbhelper.js'
@@ -37,18 +40,22 @@ gulp.task('vendors', () => {
 });
 gulp.task('js', () => {
     return gulp.src(jsFiles)
+        .pipe(sourcemaps.init())
         .pipe(concat('app.js'))
         .pipe(gulp.dest(distFolder))
         .pipe(rename('app.min.js'))
         .pipe(uglify())
+        .pipe(sourcemaps.write('./dist'))
         .pipe(gulp.dest(distFolder));
 });
 gulp.task('js-detail', () => {
     return gulp.src(detailJsFiles)
+        .pipe(sourcemaps.init())
         .pipe(concat('detail.js'))
         .pipe(gulp.dest(distFolder))
         .pipe(rename('detail.min.js'))
         .pipe(uglify())
+        .pipe(sourcemaps.write('./dist'))
         .pipe(gulp.dest(distFolder));
 });
 

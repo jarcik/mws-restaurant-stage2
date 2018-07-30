@@ -9,6 +9,7 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
+  updateRestaurants();
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -72,6 +73,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+  if(document.getElementById('map-container').style.display == 'none' || map) return;
   let loc = {
     lat: 40.722216,
     lng: -73.987501
@@ -81,7 +83,6 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
-  updateRestaurants();
 }
 
 /**
@@ -127,10 +128,8 @@ resetRestaurants = (restaurants) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const div = document.getElementById('restaurants-list');
-  var tabi = 3;
   restaurants.forEach(restaurant => {
-    div.append(createRestaurantHTML(restaurant, tabi));
-    tabi++;
+    div.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
 }
@@ -138,7 +137,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create restaurant HTML.
  */
-createRestaurantHTML = (restaurant, tabindex) => {
+createRestaurantHTML = (restaurant) => {
   const div = document.createElement('div');
 
   var imageSrc = DBHelper.imageUrlForRestaurant(restaurant);
@@ -169,7 +168,7 @@ createRestaurantHTML = (restaurant, tabindex) => {
   role.value = 'button';
   more.setAttributeNode(role);  
   var tabi = document.createAttribute('tabindex');
-  tabi.value = tabindex.toString();
+  tabi.value = 0;
   more.setAttributeNode(tabi);  
   var label = document.createAttribute('aria-label');
   label.value = 'detail for ' + restaurant.name + ' restaurant';
@@ -184,6 +183,7 @@ createRestaurantHTML = (restaurant, tabindex) => {
  * Add markers for current restaurants to the map.
  */
 addMarkersToMap = (restaurants = self.restaurants) => {
+  if(!self.map) return;
   restaurants.forEach(restaurant => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
@@ -192,4 +192,15 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+}
+
+hamIconClick = () => {
+  var icon = document.getElementById('ham_icon');
+  icon.parentNode.removeChild(icon);
+  
+  var map = document.getElementById('map-container');
+  map.style.display = 'block';
+  if(!map) {
+    initMap();
+  }
 }
