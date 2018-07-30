@@ -1,42 +1,77 @@
+//start of the cache name (used even in comparing in deleting cache)
+const cacheNameStartWith = 'restaurant-reviews-cache-';
+//name of a cache - as a constant
+const cacheNameFullStatic = cacheNameStartWith+'v2';
+
+//install sw
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open('restaurant-reviews-cache')
+    caches.open(cacheNameFullStatic)
     .then(cache => {
       return cache.addAll([
         '/',
-        './css/styles-extra-large.css',
-        './css/styles-large.css',
-        './css/styles-medium.css',
-        './css/styles.css',
-        './data/restaurants.json',
-        './img/1.jpg',
-        './img/2.jpg',
-        './img/3.jpg',
-        './img/4.jpg',
-        './img/5.jpg',
-        './img/6.jpg',
-        './img/7.jpg',
-        './img/8.jpg',
-        './img/9.jpg',
-        './img/10.jpg',
-        './js/dbhelper.js',
-        './js/main.js',
-        './js/restaurant_info.js',
+        './dist/styles-extra-large.css',
+        './dist/styles-large.css',
+        './dist/styles-medium.css',
+        './dist/styles.css',
+        './dist/styles-detail.css',
+        './dist/styles-extra-large-detail.css',
+        './dist/styles-large-detail.css',
+        './dist/styles-medium-detail.css',
+        './img/1.webp',
+        './img/2.webp',
+        './img/3.webp',
+        './img/4.webp',
+        './img/5.webp',
+        './img/6.webp',
+        './img/7.webp',
+        './img/8.webp',
+        './img/9.webp',
+        './img/10.webp',
+        './dist/detail.min.js',
+        './dist/app.min.js',
+        './dist/vendors.min.js',
         './index.html',
         './restaurant.html'
       ]);
     }).catch(error => console.log(error))
   );
 });
-  
+
+//get rid off old caches
 self.addEventListener('activate',  event => {
-    event.waitUntil(self.clients.claim());
+    event.waitUntil(
+      caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames.filter(name => {
+            return name.startsWith(cacheNameStartWith) && name != cacheNameFullStatic;
+          }).map(name => {
+            return caches.delete(name);
+          })
+        )
+      })
+    );
   });
-  
+
+//fetching of sw
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+    caches.open(cacheNameFullStatic).then(cache => {
+      return cache.match(event.request).then(response => {
+        if(response) {
+          return response;
+        } else {
+          return fetch(event.request).then(fetchResponse => {
+            return fetchResponse;
+          }).catch(error => {
+            console.log("error in fetching data from " + event.request.url);
+            console.log(error);
+          })
+        }
+      })
+    }).catch(error => {
+      console.log("error in fetching data with sw");
+      console.log(error);
     })
   );
 });

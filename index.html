@@ -2,14 +2,16 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" media="screen and (min-width: 600px)" href="css/styles-medium.css">
-  <link rel="stylesheet" media="screen and (min-width: 950px)" href="css/styles-large.css">
-  <link rel="stylesheet" media="screen and (min-width: 1367px)" href="css/styles-extra-large.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <link rel="stylesheet" href="dist/styles.css">
+  <link rel="stylesheet" media="screen and (min-width: 600px)" href="dist/styles-medium.css">
+  <link rel="stylesheet" media="screen and (min-width: 950px)" href="dist/styles-large.css">
+  <link rel="stylesheet" media="screen and (min-width: 1367px)" href="dist/styles-extra-large.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000"/>
   <title>Restaurant Reviews</title>
 </head>
 
@@ -27,10 +29,10 @@
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
-        <select tabindex="1" aria-label="selectt neighbordhoods" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+        <select tabindex="1" aria-label="Select neighbordhoods" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select tabindex="2" arial-label="select cuisine" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+        <select tabindex="2" aria-label="Select cuisine" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
       </div>
@@ -38,9 +40,13 @@
     </section>
   </main>
 
-  <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <!-- idb -->
+  <script type="application/javascript" charset="utf-8" src="dist/vendors.min.js"></script>
+  <!-- app -->
+  <script type="application/javascript" charset="utf-8" src="dist/app.min.js"></script>
+  <!-- map -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGD6qFycTQJpAS4cJc4q-_AqSeYsuoeL0&libraries=places&callback=initMap"></script>
+  <!-- SW -->
   <script>
     if('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');

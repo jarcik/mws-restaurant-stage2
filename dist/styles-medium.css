@@ -1,0 +1,1 @@
+@media screen and (min-width:600px){#restaurants-list{grid-template-columns:repeat(2,1fr);grid-column-gap:1em;grid-row-gap:1em}}

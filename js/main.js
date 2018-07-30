@@ -1,3 +1,4 @@
+
 let restaurants,
   neighborhoods,
   cuisines
@@ -140,9 +141,11 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant, tabindex) => {
   const div = document.createElement('div');
 
+  var imageSrc = DBHelper.imageUrlForRestaurant(restaurant);
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  if(imageSrc)
+    image.src = imageSrc;
   image.alt = DBHelper.imageAltText(restaurant);
   div.append(image);
 
